@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/question.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +26,18 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [];
+  // List<String> questions = [
+  //   'You can lead a cow down stairs but not up stairs.',
+  //   'Approximately one quarter of human bones are in the feet.',
+  //   'A slug\'s blood is green.'
+  // ];
+  // Question q1 = Question(questionText: 'You can lead a cow down stairs but not up stairs.',questionAnswer: false);
+  List<Question> questions = [Question(questionText: 'You can lead a cow down stairs but not up stairs.', questionAnswer: false),
+    Question(questionText: 'Approximately one quarter of human bones are in the feet.', questionAnswer: true),
+    Question(questionText: 'A slug\'s blood is green.', questionAnswer: true)];
+  // List<bool> answers = [false, true, true];
+  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +50,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[count].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -57,6 +70,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked true.
+                setState(() {
+                  if(questions[count].questionAnswer == false){
+                    scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
+                  }else{
+                    scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
+                  }
+                  count++;
+                });
               },
               child: Text(
                 'True',
@@ -77,6 +98,14 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked false.
+                setState(() {
+                  if(questions[count].questionAnswer == false){
+                    scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
+                  }else{
+                    scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
+                  }
+                  count++;
+                });
               },
               child: Text(
                 'False',
@@ -88,6 +117,9 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
+        Row(
+          children: scoreKeeper,
+        )
         //TODO: Add a Row here as your score keeper
       ],
     );
