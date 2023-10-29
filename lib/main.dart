@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = new QuizBrain();
 
@@ -17,7 +18,7 @@ class Quizzler extends StatelessWidget {
             child: QuizPage(),
           ),
         ),
-      ),
+      ),debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -39,6 +40,21 @@ class _QuizPageState extends State<QuizPage> {
   //   Question(questionText: 'Approximately one quarter of human bones are in the feet.', questionAnswer: true),
   //   Question(questionText: 'A slug\'s blood is green.', questionAnswer: true)];
   // List<bool> answers = [false, true, true];
+  void checkAnswer(bool choosedOption){
+    setState(() {
+      if(quizBrain.goForward() == true) {
+        if (quizBrain.getAnswer() == choosedOption) {
+          scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
+        } else {
+          scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
+        }
+      }else{
+        Alert(context: context, title: "Quiz over", desc: "Please count you score on the scoreboard").show();
+      }
+      quizBrain.nextQues();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,14 +87,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked true.
-                setState(() {
-                  if(quizBrain.getAnswer() == false){
-                    scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
-                  }else{
-                    scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
-                  }
-                  quizBrain.nextQues();
-                });
+                checkAnswer(true);
               },
               child: Text(
                 'True',
@@ -99,14 +108,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 // The user picked false.
-                setState(() {
-                  if(quizBrain.getAnswer() == false){
-                    scoreKeeper.add(Icon(Icons.check, color: Colors.green,));
-                  }else{
-                    scoreKeeper.add(Icon(Icons.close, color: Colors.red,));
-                  }
-                  quizBrain.nextQues();
-                });
+                checkAnswer(false);
               },
               child: Text(
                 'False',

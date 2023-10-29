@@ -38,6 +38,13 @@ class QuizBrain{
     }
   }
 
+  bool goForward(){
+    if(_count < _questions.length - 1){
+      return true;
+    }
+    return false;
+  }
+
   String getQuestion(){
     return _questions[_count].questionText;
   }
